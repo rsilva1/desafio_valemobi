@@ -1,0 +1,59 @@
+.row
+  .col-lg-6
+    h1
+      = link_to "MarketV", :root
+  .col-lg-6
+    - if user_signed_in?
+      = "Bem vindo #{current_user.username}"
+      = link_to "Sair", :destroy_user_session, method: :delete
+    - else
+      = simple_form_for :user, url: user_session_path, html: { class: "login-form form-inline" }, format: :json, remote: true do |f|
+        = hidden_field_tag :authenticity_token
+        = f.input :login, label: false, placeholder: 'Usuário ou email'
+        = f.input :password, label: false, placeholder: 'Senha'
+        = f.button :submit, 'Entrar'
+      button.btn.btn-primary data-toggle="modal" data-target="#signupModal" Cadastre-se
+
+#signupModal.modal.fade role="dialog"
+  .modal-dialog
+    .modal-content
+      .modal-header
+        button.close type="button" data-dismiss="modal" &times;
+        h4.modal-title Criar conta no Market V
+      .modal-body
+        = simple_form_for :user, url: user_registration_path, html: { class: "signup-form" }, format: :json, remote: true do |f|
+          = hidden_field_tag :authenticity_token
+          = f.input :username, autofocus: true
+          = f.input :email, as: :email
+          = f.input :password
+          = f.submit "Cadastrar"
+
+javascript:
+  $("form.login-form, form.signup-form").on("submit", function(){
+    $("input[name='user[authenticity_token]']").val($("meta[name=csrf-token]").attr("content"));
+  });
+
+  $("form.login-form").on("ajax:success", function(){ location.reload(); });
+  $("form.login-form").on("ajax:error", function(e, data, status, xhr){
+    $(this).find('input[name="user[password]"]').val('');
+
+    alert(data.responseText);
+  });
+
+  $("form.signup-form").on("ajax:success", function(){ location.reload(); });
+  $("form.signup-form").on("ajax:error", function(e, data, status, xhr){
+    $(this).find('input[name="user[password]"]').val('');
+    $(this).find('span.errorMsg').remove();
+
+    var errors = JSON.parse(data.responseText)["errors"];
+    var fields = ["username", "email", "password"];
+    for(var i=0;i<fields.length;i++){
+      var fieldError = errors[fields[i]];
+      if(fieldError != undefined){
+        var $errorElement = $('<span class="errorMsg">'+fieldError.toString()+'</span>');
+        var $fieldInput = $(this).find('input[name="user['+fields[i]+']"]');
+
+        $errorElement.insertAfter($fieldInput);
+      }
+    }
+  });
