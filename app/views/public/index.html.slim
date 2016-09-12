@@ -1,0 +1,43 @@
+.container
+	header
+		.row
+			.col-lg-6
+				h1 MarketV
+			.col-lg-6
+				- if user_signed_in?
+					= "Bem vindo #{current_user.username}"
+					= link_to "Sair", :destroy_user_session, method: :delete
+				- else
+					= simple_form_for :user, url: user_session_path, html: { class: "js-enter-submit login-form form-inline" }, format: :json, remote: true do |f|
+						= hidden_field_tag :authenticity_token
+						= f.input :login, label: false, placeholder: 'Usuário ou email'
+						= f.input :password, label: false, placeholder: 'Senha'
+						= f.button :submit, 'Entrar'
+					= link_to "Cadastre-se", :new_user_registration
+	section
+		.intro
+			p Bem vindo ao Market V, uma plataforma revolucinária de compra e venda de mercadorias.
+			p Como funciona
+			p Compadores
+			p Lorem Ipsum
+			p Vendedores
+			p Lorem Ipsum
+			p Prepare-se para conhecer um novo mundo de fornecedores e ampliar sua rede de clientes. Cadastre-se agora mesmo!
+	footer
+		| Footer: Lorem ipsum
+
+sass:
+	.form-inline
+		input
+			margin-right: 15px
+
+javascript:
+	$("form.login-form").on("submit", function(){
+		$("input[name='user[authenticity_token]']").val($("meta[name=csrf-token]").attr("content"));
+	});
+
+	$("form.login-form").on("ajax:success", function(){ location.reload(); });
+	$("form.login-form").on("ajax:error", function(e, data, status, xhr){
+		$("form input[name='user[password]']").val('');
+		alert(data.responseText);
+	});

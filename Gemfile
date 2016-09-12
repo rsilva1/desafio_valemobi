@@ -20,6 +20,10 @@ gem 'puma'
 # database
 gem 'pg'
 
+# views
+gem 'slim'
+gem 'simple_form'
+
 group :development, :test do
   gem 'byebug'
   gem 'web-console', '~> 2.0'
