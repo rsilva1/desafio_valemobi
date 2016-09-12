@@ -1,0 +1,8 @@
+header
+  .row
+    .col-lg-6
+      h1
+        = link_to "MarketV", :admin_root
+  .col-lg-6
+      = "Bem vindo #{current_admin.fullname}"
+      = link_to "Sair", :destroy_admin_session, method: :delete
