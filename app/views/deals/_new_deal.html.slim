@@ -5,7 +5,8 @@
         button.close type="button" data-dismiss="modal" &times;
         h4.modal-title Criar negociação
       .modal-body
-        = simple_form_for @new_deal, url: deals_path, html: { class: "new-deal-form", data: {"my-id": current_user.id } }, remote: true do |f|
+        - if user_signed_in?
+        = simple_form_for @new_deal, url: deals_path, html: { class: "new-deal-form", data: {"my-id": current_user.try(:id) } }, remote: true do |f|
           = f.input :buyer_id, as: :hidden
           = f.input :seller_id, as: :hidden
           = f.input :deal_type, as: :radio_buttons, collection: [["Compra", "buy"], ["Venda", "sell"]]
