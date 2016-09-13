@@ -30,11 +30,6 @@ class ItemsController < ApplicationController
   	redirect_to :back
   end
 
-  protected
-  	def authenticated_user_or_admin
-  		user_signed_in? || admin_signed_in?
-  	end
-
   private
   	def allowed_params
       params.require(:item).permit(:quantity, :price, product: [:name, :category_id])

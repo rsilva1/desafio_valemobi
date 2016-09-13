@@ -46,10 +46,19 @@ section
 										span.glyphicon.glyphicon-remove
 
 			#deals.tab-pane.fade
-				| Deals
+				button.btn.btn-primary data-toggle="modal" data-target="#newDealModal" Nova negociação
+				.row
+					.col-lg-12
+						h2 Minhas aquisições
+						= render partial: "/deals/deals_list", locals: { deals: @deals_buy }
+				.row
+					.col-lg-12
+						h2 Minhas vendas
+						= render partial: "/deals/deals_list", locals: { deals: @deals_sell }
 
 			#config.tab-pane.fade
 				| Config
 
 	= render partial: "/items/new_item"
 	= render partial: "/items/edit_item"
+	= render partial: "/deals/new_deal"

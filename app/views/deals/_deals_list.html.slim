@@ -1,0 +1,22 @@
+table.table.table-bordered.table-striped.table-hover
+  thead
+    th Comprador
+    th Vendedor
+    th Criada em
+    th Mercadoria
+    th Categoria
+    th Quantidade
+    th Preço (unid.)
+    th Preço (total)
+    th Ações
+  tbody
+    - deals.each do |deal|
+      tr
+        td = deal.buyer_name
+        td = deal.seller_name
+        td = deal.created_at
+        td = deal.item.product.name
+        td = deal.item.product.category.name
+        td = deal.item.quantity
+        td = deal.item.price
+        td = deal.item.total_price

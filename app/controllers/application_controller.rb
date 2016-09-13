@@ -12,9 +12,14 @@ class ApplicationController < ActionController::Base
     devise_parameter_sanitizer.permit :sign_up, keys: added_attrs
     devise_parameter_sanitizer.permit :account_update, keys: added_attrs
   end
+  
+  def authenticated_user_or_admin
+    user_signed_in? || admin_signed_in?
+  end
 
   private
     def build_potential_new_objects
       @new_item = Item.new
+      @new_deal = Deal.new
     end
 end

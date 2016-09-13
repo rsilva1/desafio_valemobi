@@ -11,4 +11,5 @@ Rails.application.routes.draw do
 
   get 'admin_panel', to: 'admin#index', as: :admin_root
   resources :items, only: [:index, :update, :create, :destroy]
+  resources :deals, only: [:index, :create, :destroy]
 end

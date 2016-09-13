@@ -19,6 +19,7 @@ en:
         username: 'Usuário'
         quantity: 'Quantidade'
         price: 'Preço unitário'
+        deal_type: 'Tipo de negociação'
     #   user:
     #     new:
     #       email: 'E-mail to sign in.'

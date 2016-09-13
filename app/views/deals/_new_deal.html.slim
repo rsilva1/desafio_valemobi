@@ -1,0 +1,31 @@
+#newDealModal.modal.fade role="dialog"
+  .modal-dialog
+    .modal-content
+      .modal-header
+        button.close type="button" data-dismiss="modal" &times;
+        h4.modal-title Criar negociação
+      .modal-body
+        = simple_form_for @new_deal, url: deals_path, html: { class: "new-deal-form", data: {"my-id": current_user.id } }, remote: true do |f|
+          = f.input :buyer_id, as: :hidden
+          = f.input :seller_id, as: :hidden
+          = f.input :deal_type, as: :radio_buttons, collection: [["Compra", "buy"], ["Venda", "sell"]]
+          = f.input :item_id, collection: current_user.depot.items.map { |i| [i.product.name, i.id ]}
+          = f.submit "Criar"
+
+javascript:
+  $("form.new-deal-form").on("submit", function(e){
+    var dealType = $(this).find('#deal_deal_type_buy').is(':checked') ? "buy" : "sell";
+    var currentUserID = $(this).data("my-id");
+
+    if(dealType == "buy") $(this).find("#deal_buyer_id").val(currentUserID);
+    else $(this).find("#deal_seller_id").val(currentUserID);
+  });
+
+  $("form.new-deal-form").on("ajax:success", function(){
+    location.reload();
+  });
+
+  $("form.new-deal-form").on("ajax:error", function(){
+    alert("Erro ao criar negociação");
+    $("#newDealModal").modal("hide");
+  });  
