@@ -1,0 +1,24 @@
+#addItemModal.modal.fade role="dialog"
+  .modal-dialog
+    .modal-content
+      .modal-header
+        button.close type="button" data-dismiss="modal" &times;
+        h4.modal-title Adicionar mercadoria a depósito
+      .modal-body
+        = simple_form_for @new_item, url: items_path, html: { class: "add-item-form" }, remote: true do |i|
+          = i.simple_fields_for Product.new do |p|
+            = p.input :name
+            = p.association :category, include_blank: false
+          = i.input :quantity
+          = i.input :price
+          = i.submit "Criar"
+
+javascript:
+  $("form.add-item-form").on("ajax:success", function(){
+    location.reload();
+  });
+
+  $("form.add-item-form").on("ajax:error", function(){
+    alert("Erro ao adicionar mercadoria");
+    $("#addItemModal").modal("hide");
+  });  

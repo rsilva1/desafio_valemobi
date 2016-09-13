@@ -13,8 +13,12 @@ en:
     # Examples
     labels:
       defaults:
+        name: 'Nome'
+        category: 'Tipo de mercadoria'
         password: 'Senha'
         username: 'Usuário'
+        quantity: 'Quantidade'
+        price: 'Preço unitário'
     #   user:
     #     new:
     #       email: 'E-mail to sign in.'

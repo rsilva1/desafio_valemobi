@@ -1,0 +1,33 @@
+#editItemModal.modal.fade role="dialog"
+  .modal-dialog
+    .modal-content
+      .modal-header
+        button.close type="button" data-dismiss="modal" &times;
+        h4.modal-title Edição de mercadoria
+      .modal-body
+        = simple_form_for :item, url: item_path(0), html: { class: "edit-item-form" }, remote: true do |f|
+          = f.input :id, as: :hidden
+          = f.input :quantity
+          = f.input :price
+          = f.submit "Salvar"
+
+javascript:
+  $(".js-edit-item").on("click", function(){
+    var id = $(this).data("id");
+    var quantity = $(this).data("quantity");
+    var price = $(this).data("price");
+
+    var $editForm = $("#editItemModal form");
+    $('input[name="item[id]"]', $editForm).val(id);
+    $('input[name="item[quantity]"]', $editForm).val(quantity);
+    $('input[name="item[price]"]', $editForm).val(price);
+  });
+
+  $("form.edit-item-form").on("ajax:success", function(){
+    location.reload();
+  });
+
+  $("form.edit-item-form").on("ajax:error", function(){
+    alert("Erro ao editar");
+    $("#addProductModal").modal("hide");
+  });  

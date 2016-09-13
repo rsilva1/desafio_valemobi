@@ -1,18 +1,55 @@
 header
 	= render partial: "header"
 section
-	.intro
-		p Bem vindo ao Market V, uma plataforma revolucinária de compra e venda de mercadorias.
-		p Como funciona
-		p Compadores
-		p Lorem Ipsum
-		p Vendedores
-		p Lorem Ipsum
-		p Prepare-se para conhecer um novo mundo de fornecedores e ampliar sua rede de clientes. Cadastre-se agora mesmo!
-footer
-	| Footer: Lorem ipsum
+	- unless user_signed_in?
+		= render partial: "intro"
+	- else
+		ul.nav.nav-tabs
+			li.active
+				a.btn.btn-lg.btn-default data-toggle="tab" href="#depot"
+					span.glyphicon.glyphicon-list aria-hidden="true"
+					| Meu armazém
+			li
+				a.btn.btn-lg.btn-default data-toggle="tab" href="#deals"
+					span.glyphicon.glyphicon-transfer aria-hidden="true"
+					| Negociações
+			li
+				a.btn.btn-lg.btn-default data-toggle="tab" href="#config"
+					span.glyphicon.glyphicon-cog aria-hidden="true"
+					| Configurações de conta
+		
+		.tab-content
+			#depot.tab-pane.fade.in.active
+				button.btn.btn-primary data-toggle="modal" data-target="#addItemModal" Nova mercadoria
+				table.table.table-bordered.table-striped.table-hover
+					thead
+						th Código
+						th Mercadoria
+						th Categoria
+						th Quantidade
+						th Preço (unid.)
+						th Preço (total)
+						th Ações
+					tbody
+						- @depot.items.each do |item|
+							tr
+								td = item.product.id
+								td = item.product.name
+								td = item.product.category.name
+								td = item.quantity
+								td = item.price
+								td = item.total_price
+								td
+									button.btn.btn-primary.js-edit-item data-toggle="modal" data-target="#editItemModal" data-id="#{item.id}" data-quantity="#{item.quantity}" data-price="#{item.price}"
+										span.glyphicon.glyphicon-pencil
+									= link_to item_path(item.id), method: :delete, data: { confirm: "Apagar item? btn-danger" }, class: "btn btn-md btn-danger" do
+										span.glyphicon.glyphicon-remove
 
-sass:
-	.form-inline
-		input
-			margin-right: 15px
+			#deals.tab-pane.fade
+				| Deals
+
+			#config.tab-pane.fade
+				| Config
+
+	= render partial: "/items/new_item"
+	= render partial: "/items/edit_item"
